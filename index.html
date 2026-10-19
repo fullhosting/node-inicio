@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="light dark">
+<title>Tu app Node.js está funcionando</title>
+<style>
+:root{--bg:#f4f4f2;--ground:radial-gradient(1400px 680px at 50% 0,#fdfdfc 0%,#f4f4f2 60%);--grid:rgba(24,24,27,.045);--card:#fafaf9;--raised:#efefec;--edge:#e4e4e7;--edge-strong:#d4d4d8;--heading:#18181b;--text:#3f3f46;--muted:#5b5b63;--ok:#15803d;--ok-halo:rgba(21,128,61,.16);--chrome:linear-gradient(180deg,#2a2a2e,#18181b);--on-chrome:#fafaf9;--focus:#18181b;--shadow:0 1px 2px rgba(24,24,27,.04),0 14px 32px -24px rgba(24,24,27,.28)}
+@media (prefers-color-scheme:dark){:root{--bg:#000;--ground:radial-gradient(1400px 680px at 50% 0,#232323 0%,#0d0d0d 50%,#000 100%);--grid:rgba(255,255,255,.035);--card:#0e0e10;--raised:#18181b;--edge:#232327;--edge-strong:#3a3a40;--heading:#fff;--text:#b4b4b4;--muted:#a1a1aa;--ok:#05df72;--ok-halo:rgba(5,223,114,.18);--chrome:linear-gradient(180deg,#fff,#e9e9ec 52%,#c9c9ce);--on-chrome:#0a0a0a;--focus:#fafafa;--shadow:inset 0 1px 0 rgba(255,255,255,.06),0 18px 40px -26px rgba(0,0,0,.95)}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;background:linear-gradient(to right,var(--grid) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(to bottom,var(--grid) 1px,transparent 1px) 0 0/48px 48px,var(--ground);background-color:var(--bg);color:var(--text);font:400 16px/1.6 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI Variable","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+a:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:6px}
+.wrap{width:100%;max-width:1120px;margin:0 auto;padding:0 24px}
+.top{padding-top:28px;padding-bottom:28px}
+.logo{display:block;width:132px;height:auto;color:var(--heading)}
+main{flex:1}
+.hero{text-align:center;padding:56px 0 64px}
+.status{display:inline-flex;align-items:center;gap:8px;margin:0 0 28px;padding:6px 14px 6px 12px;border:1px solid var(--edge);border-radius:999px;background:var(--card);font-size:13px;font-weight:600;color:var(--heading)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px var(--ok-halo)}
+.domain{margin:0 0 12px;font-size:clamp(17px,2.4vw,20px);font-weight:500;color:var(--muted);overflow-wrap:anywhere}
+h1{margin:0 auto 20px;text-wrap:balance;color:var(--heading);font-size:clamp(38px,7vw,68px);line-height:1.04;font-weight:800;letter-spacing:-.035em}
+.lead{margin:0 auto;text-wrap:balance;max-width:34em;font-size:clamp(16px,2vw,18px)}
+.visitor{margin:32px auto 0;text-wrap:balance;max-width:44em;font-size:14px;color:var(--muted)}
+.steps{padding:0 0 72px}
+.steps-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:0 0 24px;padding-top:40px;border-top:1px solid var(--edge)}
+h2{margin:0;color:var(--heading);font-size:22px;line-height:1.25;font-weight:700;letter-spacing:-.015em}
+.steps-head p{margin:0;font-size:14px;color:var(--muted)}
+.grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.card{display:flex;flex-direction:column;padding:24px;background:var(--card);border:1px solid var(--edge);border-radius:16px;box-shadow:var(--shadow)}
+.card-top{display:flex;align-items:center;justify-content:space-between;margin:0 0 20px}
+.icon{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:var(--raised);border:1px solid var(--edge);color:var(--heading)}
+.icon svg{width:20px;height:20px}
+.num{font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted);letter-spacing:.06em}
+h3{margin:0 0 8px;color:var(--heading);font-size:17px;line-height:1.3;font-weight:700;letter-spacing:-.01em}
+.card code{font:500 13px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--raised);border:1px solid var(--edge);border-radius:6px;padding:2px 6px}
+.card p{margin:0 0 20px;font-size:15px;line-height:1.55;flex:1;text-wrap:pretty}
+.card a{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-size:14px;font-weight:600;color:var(--heading);text-decoration:none}
+.card a span{transition:transform .15s}
+.card a:hover{text-decoration:underline;text-underline-offset:3px}
+.card a:hover span{transform:translateX(2px)}
+.help{display:flex;align-items:center;justify-content:space-between;gap:16px 24px;flex-wrap:wrap;margin-top:16px;padding:20px 24px;border:1px solid var(--edge);border-radius:16px;background:var(--card)}
+.help p{margin:0;font-size:15px}
+.help strong{color:var(--heading);font-weight:700}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border-radius:12px;border:1px solid var(--edge-strong);background:var(--bg);color:var(--heading);font-size:14px;font-weight:600;text-decoration:none;transition:filter .15s}
+.btn:hover{filter:brightness(.96)}
+.btn.primary{background:var(--chrome);color:var(--on-chrome);border-color:transparent}
+footer{padding:24px 0 32px;text-wrap:balance;text-align:center;font-size:13px;color:var(--muted)}
+footer a{text-decoration:none}
+footer a:hover{color:var(--heading);text-decoration:underline;text-underline-offset:3px}
+@media (max-width:1000px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.wrap{padding:0 16px}.top{padding-top:20px;padding-bottom:20px}.logo{width:116px}.hero{padding:32px 0 48px}.status{margin-bottom:22px}.grid{grid-template-columns:1fr;gap:12px}.card{padding:20px}.card-top{margin-bottom:16px}.steps-head{padding-top:32px;margin-bottom:20px}.help{padding:20px}.btns{width:100%;flex-direction:column}.btn{width:100%}.steps{padding-bottom:48px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="wrap top">
+<a href="https://fullhosting.com.ar" aria-label="Full Hosting"><svg class="logo" width="148" height="31" viewBox="0 0 590.57 122.21" role="img" aria-label="Full Hosting" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M170.82,34.55h38.36v10.08h-26.39v15.16h24.78v9.93h-24.78v24.68h-11.97v-59.86Z"/><path d="M253.27,81.05c0,6.51.09,11.04.18,13.35h-11.55c-.26-1.37-.35-3.29-.43-5.43-2.79,4.73-6.83,6.22-12.44,6.22-9.04,0-13.97-5.67-13.97-15.85v-29.09h11.8v27.12c0,4.76,1.69,8.05,6.56,8.05s7.96-3.07,7.96-11v-24.17h11.89v30.8Z"/><path d="M263.6,94.4v-60.26h3.12c4.83,0,8.75,3.92,8.75,8.75v51.51h-11.87Z"/><path d="M285.78,94.4v-60.26h3.12c4.83,0,8.75,3.92,8.75,8.75v51.51h-11.87Z"/><path d="M317.09,34.55h6.23v24.94h34.42v-24.94h6.23v59.86h-6.23v-29.4h-34.42v29.4h-6.23v-59.86Z"/><path d="M414.72,72.34c0,12.42-6.99,23.12-20.25,23.12-12.2,0-19.69-9.75-19.69-23s7.18-23.06,20.16-23.06c11.93,0,19.78,9.14,19.78,22.94ZM380.88,72.42c0,10.09,5.26,17.88,13.93,17.88s13.81-7.3,13.81-17.87-4.92-17.9-13.99-17.9-13.75,7.57-13.75,17.89Z"/><path d="M426.71,82.07c1.39,5.3,5.21,8.45,11.7,8.45,7.2,0,10.08-3.23,10.08-7.73s-2.07-6.81-11.25-9.03c-11.9-2.88-14.62-6.49-14.62-12.37s4.57-12,15.13-12,15.28,6.29,15.92,12.48h-5.74c-.72-3.3-3.28-7.59-10.42-7.59s-9,3.41-9,6.63c0,3.7,1.97,5.54,10.38,7.56,12.82,3.07,15.71,7.3,15.71,13.86,0,7.87-6.32,13.11-16.34,13.11-10.65,0-16.25-5.49-17.43-13.38h5.88Z"/><path d="M465.57,50.44v-15.9h5.85v15.9h10.12v5.07h-10.12v27.28c0,4.63,1.05,7.16,5.16,7.16,1.2,0,2.92-.07,4.23-.45v4.71c-1.67.65-4,.8-5.96.8-6.18,0-9.28-3.15-9.28-10.3v-34.27Z"/><path d="M489.15,50.44h5.85v43.96h-5.85v-43.96Z"/><path d="M507.94,61.52c0-3.84,0-7.61-.09-11.08h5.71c.19,1.36.29,6.57.23,7.84,1.85-4.16,5.45-8.89,14.25-8.89,8.01,0,14.73,4.69,14.73,16.62v28.39h-5.85v-27.56c0-7.29-2.95-12.1-10.17-12.1-9.47,0-12.95,7.61-12.95,16.85v22.81h-5.85v-32.88Z"/><path d="M590.41,90.97c0,14.08-6.05,21.75-19.53,21.75-12.3,0-16.75-6.9-17.68-13.25h5.97c1.45,5.5,5.94,8.24,11.96,8.24,10.77,0,13.62-6.9,13.62-17.59v-4.11c-2.36,5.36-6.54,8.3-14.25,8.3-10.53,0-18.19-8.57-18.19-21.85,0-14.58,8.4-23.06,18.89-23.06,8.7,0,12.43,4.1,13.56,7.34.09-2.29.22-5.3.3-6.29h5.52c-.01,2.02-.16,8.5-.16,12.72v27.8ZM558.42,72.21c0,9.92,5.21,16.9,13.08,16.9,10.3,0,13.39-6.87,13.39-17.54s-3.1-16.98-13.12-16.98c-9.21,0-13.34,7.84-13.34,17.63Z"/><path d="M496.44,38.29c0,2.43-1.97,4.4-4.4,4.4s-4.4-1.97-4.4-4.4,1.97-4.4,4.4-4.4,4.4,1.97,4.4,4.4Z"/><path d="M61.11,0L0,61.11l61.11,61.1,61.1-61.1L61.11,0ZM43.49,60.11l-11.48,11.48-2.41-2.41,18.52-18.52-8.08-8.08,21.06-21.06,39.58,39.59-39.58,39.58-18.34-18.33,11.48-11.48-10.76-10.76Z"/></svg>
+</a>
+</header>
+<main class="wrap">
+<section class="hero" aria-labelledby="t">
+<p class="status"><span class="dot" aria-hidden="true"></span>App activa</p>
+<p class="domain" id="d">Tu app</p>
+<h1 id="t">Tu app Node.js ya está en línea</h1>
+<p class="lead">Este es el proyecto de ejemplo de Cloud Apps. Ya corre con HTTPS en tu dirección. Estos son los primeros pasos para convertirlo en tu app.</p>
+<p class="visitor">Si llegaste buscando esta app, todavía está en construcción. Volvé pronto.</p>
+</section>
+<section class="steps" aria-labelledby="s">
+<div class="steps-head">
+<h2 id="s">Primeros pasos</h2>
+<p>Todo se hace desde el panel de Cloud Apps.</p>
+</div>
+<ol class="grid">
+<li class="card">
+<div class="card-top"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg></span><span class="num">01</span></div>
+<h3>Editá el código</h3>
+<p>El punto de entrada es <code>server.js</code>. Creá tu propio repositorio a partir de este proyecto y cambiá lo que quieras.</p>
+</li>
+<li class="card">
+<div class="card-top"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg></span><span class="num">02</span></div>
+<h3>Publicá tus cambios</h3>
+<p>Conectá tu repositorio de GitHub desde el panel y tu app se actualiza sola cada vez que subís un cambio.</p>
+</li>
+<li class="card">
+<div class="card-top"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><span class="num">03</span></div>
+<h3>Cargá tus variables</h3>
+<p>Las claves y configuraciones van en las variables de entorno de la app, nunca dentro del código.</p>
+</li>
+<li class="card">
+<div class="card-top"><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></svg></span><span class="num">04</span></div>
+<h3>Usá tu propio dominio</h3>
+<p>Agregá tu dominio desde el panel. El certificado HTTPS se instala y se renueva solo.</p>
+</li>
+</ol>
+<div class="help">
+<p><strong>¿Necesitás una mano?</strong> Nuestro equipo de soporte te acompaña en cada paso.</p>
+<div class="btns">
+<a class="btn" href="https://fullhosting.com.ar/ayuda">Centro de ayuda</a>
+<a class="btn primary" href="https://fullhosting.com.ar/soporte">Contactar a soporte</a>
+</div>
+</div>
+</section>
+</main>
+<footer class="wrap">
+<a href="https://fullhosting.com.ar">App alojada en Full Hosting Cloud Apps · Llevá tus ideas al mundo.</a>
+</footer>
+<script>
+(function(){var h=(location.hostname||'').replace(/^www\./i,'');if(!h)return;document.getElementById('d').textContent=h;document.title=h+' · Tu app Node.js';})();
+</script>
+</body>
+</html>
